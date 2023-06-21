@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .mb-3, h1 {
+      margin-left: 250px;
+    }
+    .btn-outline-primary{
+        margin-left: 250px;
+    }
+    @media (max-width: 768px) {
+        .mb-3, h1  {
+      margin-left: 0px;
+    }
+    .btn-outline-primary{
+        margin-left: 0px;
+    }
+    }
+    </style>
+<div class="container">
+  <h1>Update Book</h1>
+  <form method="POST" action="/admin/books/update/{{ book.id }}" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="author" class="form-label">Author</label>
+      <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="categories" class="form-label">Categories</label>
+        <input type="text" class="form-control" id="categories" name="categories" value="{{ book.categories }}" required>
+      </div>
+      
+    <div class="mb-3">
+        <label for="cover" class="form-label">Cover Image</label>
+        <input type="file" class="form-control" id="cover" name="cover" value="{{ book.cover }}" accept="image/*" required>
+      </div>
+      <div class="mb-3">
+        <label for="pdf" class="form-label">Upload PDF</label>
+        <input type="file" class="form-control" id="pdf" name="pdf" value="{{ book.pdf }}" accept="application/pdf" required>
+      </div>
+    <div class="mb-3">
+      <label for="rate" class="form-label">Rating</label>
+      <input type="number" class="form-control" id="rate" name="rate" min="0" max="5" step="0.5" value="{{ book.rate }}" required>
+    </div>
+    <a href="/admin" class="btn btn-outline-primary">Return</a>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

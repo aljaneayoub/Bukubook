@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .mb-4 {
+        margin-top: 50px;
+        margin-left: 250px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-return {
+        margin-left: 220px;
+    }
+
+    @media (max-width: 768px) {
+        .mb-4 {
+        margin-left: 0px;
+    }
+    .btn-return {
+        margin-left: 0px;
+    }
+}
+</style>
+
+<div class="container">
+    <h1>Create User</h1>
+
+    <form method="POST" action="{{ url_for('admin_create_user') }}">
+        <div class="mb-4">
+            <label for="user_name" class="form-label">User Name</label>
+            <input type="text" class="form-control" id="user_name" name="user_name" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="is_admin" class="form-label">Is Admin</label>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
+                <label class="form-check-label" for="is_admin">Check if admin</label>
+            </div>
+        </div>
+
+        <a href="/admin/users" class="btn btn-outline-primary btn-return">Return</a>
+        <button type="submit" class="btn btn-primary btn-create">Create</button>
+    </form>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

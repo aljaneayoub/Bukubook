@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    #section2 {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      margin-left: 230px;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:flex-start;
+    }
+
+    .card {
+        width: 240px;
+        margin: 10px;
+        background-color: #5e17eb;
+        text-align: center;
+        color: #fff;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card h5 {
+        margin-top: 0;
+    }
+
+    .card p {
+        margin-bottom: 10px;
+    }
+
+    .card .btn {
+        color: #5e17eb;
+        background-color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        border: 1px solid #5e17eb;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    .card .btn:hover {
+        background-color: #5e17eb;
+        color: #f8f9fa;
+        border: 1px solid #fff;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: filter 0.2s, transform 0.2s;
+    }
+
+    .card:hover .card-img-top {
+        filter: blur(3px); 
+        transform: scale(1.02) translate(0, -2px);
+
+    }
+    .card-rating {
+        margin-bottom: 10px;
+    }
+
+    .card-rating .fa-star {
+        color: gold;
+    }
+
+    .card-rating .fa-star-half-alt {
+        color: gold;
+    }
+
+    .card-rating .fa-star-o {
+        color: #343a40;
+    }
+    .alert {
+    position: fixed;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    font-size: 16px;
+    text-align: center;
+    z-index: 9999;
+  }
+    @media screen and (max-width: 600px) {
+        #section2 {
+            margin-left: 10px;
+        }
+
+  .card-container {
+    flex-direction: column;
+    align-items: center;
+    
+
+  }
+
+  .card {
+    width: 70%;
+    margin: 10px ;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endwith %}
+  <section id="section2">
+    <div class="container">
+        <div class="card-container">
+          {% for book in books %}
+            {% if book.rate >= 4 %}
+              <div class="card text-center">
+                <img src="data:image/jpeg;base64,{{ base64.b64encode(book.cover).decode('utf-8') }}" class="card-img-top" alt="Book Cover">
+                <div class="card-content">
+                  <h5 class="card-title">{{ book.title }}</h5>
+                  <p class="card-text">{{ book.author }}</p>
+                  <div class="card-rating">
+                    {% set full_stars = book.rate|int %}
+                    {% set half_star = 1 if book.rate - full_stars >= 0.5 else 0 %}
+                    {% set empty_stars = 5 - full_stars - half_star %}
+                    
+                    {% for i in range(full_stars) %}
+                      <i class="fas fa-star"></i>
+                    {% endfor %}
+                    
+                    {% if half_star %}
+                      <i class="fas fa-star-half-alt"></i>
+                    {% endif %}
+                    
+                    {% for i in range(empty_stars) %}
+                      <i class="far fa-star"></i>
+                    {% endfor %}
+                  </div>
+
+                  {% if 'username' in session %}
+                  <form action="/add_book" method="POST">
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <button type="submit" class="btn ">ADD</button>
+                </form>
+                    {% else %}
+                    <a href="/login" class="btn btn-light">ADD</a>
+                  {% endif %}
+                  
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+  </section>
+</body>
+</html>
+{% endblock %}

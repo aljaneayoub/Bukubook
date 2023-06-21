@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    #category-form {
+        display: flex;
+        align-items: center;
+        margin-top: 60px;
+        margin-left: 400px;
+    }
+    label {
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+}
+
+select {
+    padding: 8px 12px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    color: #555;
+    transition: border-color 0.3s ease;
+}
+
+select:hover,
+select:focus {
+    border-color: #5e17eb;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #5e17eb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #7b35ff;
+}
+@media (max-width: 768px) {
+    #category-form {
+
+        margin-left: 10px;
+    }
+    }
+</style>
+    <form id="category-form">
+        <label for="category">Select a category:</label>
+        <select name="category" id="category-select">
+            <option value="0" selected="selected">--Select one--</option>
+            {% for category in categories %}
+                <option value="{{ category[0] }}">{{ category[0] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+    
+    <div id="book-container">
+    </div>
+    <script>
+        document.getElementById('category-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            var categorySelect = document.getElementById('category-select');
+            var selectedCategory = categorySelect.value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var bookContainer = document.getElementById('book-container');
+                        bookContainer.innerHTML = xhr.responseText;
+                    } else {
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+
+            xhr.open('GET', '/books_by_category?category=' + selectedCategory, true);
+            xhr.send();
+        });
+    </script>
+{% endblock %}

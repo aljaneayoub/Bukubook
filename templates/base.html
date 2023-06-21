@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bukubook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #navbar {
+            width: 200px;
+            height: 100vh;
+            background-color: #5e17eb;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #navbar-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background-color: #5e17eb;
+        }
+
+        #navbar-logo img {
+            width: 200px;
+            height: 200px;
+        }
+
+        #navbar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #navbar ul li {
+            padding: 10px 20px;
+        }
+
+        #navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #navbar ul li:last-child {
+            margin-top: auto;
+        }
+
+        #navbar ul li:last-child a {
+            padding: 10px;
+            background-color: #fff;
+            color: #5e17eb;
+            border-radius: 5px;
+        }
+
+
+
+        .menu-icon {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+            color: #5e17eb;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #5e17eb;
+            color: #fff;
+            z-index: 999;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .dropdown-content li {
+            padding: 10px;
+        }
+
+        .dropdown-content li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            #navbar {
+                position: fixed;
+                z-index: 999;
+                width: 200px;
+                height: 100vh;
+                background-color: #5e17eb;
+                color: #fff;
+                top: 0;
+                left: -200px;
+                transition: left 0.3s ease-in-out;
+            }
+
+            #navbar.open {
+                left: 0;
+            }
+
+            #navbar ul {
+                display: flex;
+                flex-direction: column;
+            }
+
+            #navbar ul li {
+                padding: 10px 20px;
+            }
+
+            #navbar ul li a {
+                display: block;
+            }
+
+            .menu-icon {
+                display: block;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 999;
+            }
+
+            #content {
+                margin-left: 0;
+            }
+            #navbar-logo img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+    <script>
+        function toggleNavbar() {
+            var navbar = document.getElementById("navbar");
+            navbar.classList.toggle("open");
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="menu-icon" onclick="toggleNavbar()"><i class="fas fa-bars"></i></div>
+    <div id="navbar">
+        <div id="navbar-logo">
+            <img src="{{ url_for('static', filename='bukubook.png') }}" alt="">
+        </div>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('top_books') }}">Top Books</a></li>
+            <li class="dropdown">
+                <a href="{{ url_for('categories') }}" >Categories</a>
+                
+            </li>
+            <li><a href="{{ url_for('authors') }}">Authors</a></li>
+    
+            {% if 'username' in session %}
+            {% if 'admin' in session['username'] %}
+                <li><p>Welcome, {{ session['username'] }}</p></li>
+                <li><a href="/private-library">Private library</a></li>
+                <li><a href="/admin">Library Dashboard</a></li>
+                <li><a href="/admin/users">User Dashboard</a></li>
+                <li><a href="/logout">Logout</a></li>
+            {% else %}
+                <li><p>Welcome, {{ session['username'] }}</p></li>
+                <li><a href="/private-library">Private library</a></li>
+                <li><a href="/logout">Logout</a></li>
+            {% endif %}
+        {% else %}
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="/login">Login</a></li>
+        {% endif %}
+        
+    </div>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

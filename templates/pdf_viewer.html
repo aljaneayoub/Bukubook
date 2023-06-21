@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    embed {
+        margin-left: 250px;
+    }
+</style>
+<h2>{{ book.title }}</h2>
+<embed src="data:application/pdf;base64,{{ book.pdf }}" type="application/pdf" width="100%" height="600px">
+{% endblock %}
