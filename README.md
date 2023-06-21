@@ -31,10 +31,10 @@ and perform administrative tasks such as creating, updating, and deleting books 
 Import the file bukubook.sql into your database management tool like e.g. mysql workbench, phpmyadmin.
 
 **PS**: you should make some change in my.ini file 
-
-    - max_allowed_packet=16M
+    
+    - [mysqld] max_allowed_packet=16M
     - innodb_lock_wait_timeout=28800
-    - max_allowed_packet=512M
+    - [mysqldump] max_allowed_packet=512M
 
 ## Usage
 
