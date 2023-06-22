@@ -23,6 +23,7 @@ def decode_base64(data):
 
 app.jinja_env.filters['decode_base64'] = decode_base64
 
+# Book model
 class Book(db.Model):
     __tablename__ = 'book'
 
@@ -34,7 +35,7 @@ class Book(db.Model):
     cover = Column(BLOB, nullable=False)
     pdf = Column(BLOB, nullable=False)
 
-
+#user model
 class User(db.Model):
     __tablename__ = 'user'
 
@@ -44,6 +45,7 @@ class User(db.Model):
     library = relationship('Library', backref='user', uselist=False, cascade="all, delete")
     is_admin = Column(db.Boolean, default=False)
 
+#private library model
 class Library(db.Model):
     __tablename__ = 'library'
 
@@ -64,6 +66,7 @@ def home():
 def top_books():
     books = Book.query.all()
     return render_template('top books.html', books=books, base64=base64)
+
 @app.route('/categories', methods=['GET'])
 def categories():
     categories = db.session.query(Book.categories.distinct()).all()
@@ -74,6 +77,7 @@ def books_by_category():
     categories = request.args.get('category')
     books = Book.query.filter(Book.categories == categories).all()
     return render_template('filtred_books.html', books=books, base64=base64)
+
 @app.route('/authors', methods=['GET'])
 def authors():
     search_query = request.args.get('search')
@@ -140,6 +144,10 @@ def login():
     
     return render_template('login.html')
 
+
+
+
+
 @app.route('/private-library', methods=['GET'])
 def private_library():
     if 'username' not in session:
@@ -153,6 +161,9 @@ def private_library():
         return render_template('private_lib.html', user=user, books=books,base64=base64)
     else:
         return redirect('/')
+
+
+
 
 @app.route('/user/books/create', methods=['GET', 'POST'])
 def create_user_book():
@@ -184,6 +195,9 @@ def create_user_book():
     else:
         return redirect('/')
 from flask import Flask, render_template, request, redirect, url_for, flash
+
+
+
 
 @app.route('/add_book', methods=['POST'])
 def add_book():
@@ -330,6 +344,10 @@ def update_book(book_id):
     else:
         return redirect('/')
 
+
+
+
+
 @app.route('/admin/books/delete/<int:book_id>', methods=['POST'])
 def delete_book(book_id):
     if 'username' not in session:
@@ -400,6 +418,8 @@ def admin_create_user():
     return render_template('admin_create_user.html')
 
 
+
+
 @app.route('/admin/users/edit/<user_name>', methods=['GET', 'POST'])
 def admin_edit_user(user_name):
     if 'username' not in session:
@@ -424,6 +444,12 @@ def admin_edit_user(user_name):
 
     return render_template('admin_edit_user.html', user=user)
 
+
+
+
+
+
+
 @app.route('/admin/users/delete/<user_name>', methods=['POST'])
 def admin_delete_user(user_name):
     user = User.query.get(user_name)
@@ -432,6 +458,10 @@ def admin_delete_user(user_name):
     db.session.commit()
 
     return redirect('/admin/users')
+
+
+
+
 
 @app.route('/download_pdf/<book_id>')
 def download_pdf(book_id):
@@ -447,5 +477,8 @@ def download_pdf(book_id):
         return send_file(BytesIO(pdf_data), mimetype='application/pdf', download_name='book.pdf')
     else:
         return redirect(url_for('login'))
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
