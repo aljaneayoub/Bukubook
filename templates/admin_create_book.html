@@ -1,34 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <style>
-    .mb-4, h1 {
-      margin-left: 250px;
-    }
-    .btn-outline-primary{
-        margin-left: 250px;
-    }
-    .alert {
-    position: fixed;
-    top: 0;
-    left: 25%;
-    width: 50%;
-    padding: 10px;
-    background-color: #f8d7da;
-    color: #721c24;
-    font-size: 16px;
-    text-align: center;
-    z-index: 9999;
-  }
-    @media (max-width: 768px) {
-        .mb-4, h1  {
-      margin-left: 0px;
-    }
-    .btn-outline-primary{
-        margin-left: 0px;
-    }
-    }
-    </style>
+.mb-4, h1 {
+  margin-left: 250px;
+}
+.btn-outline-primary{
+    margin-left: 250px;
+}
+.alert {
+position: fixed;
+top: 0;
+left: 25%;
+width: 50%;
+padding: 10px;
+background-color: #f8d7da;
+color: #721c24;
+font-size: 16px;
+text-align: center;
+z-index: 9999;
+}
+@media (max-width: 768px) {
+    .mb-4, h1  {
+  margin-left: 0px;
+}
+.btn-outline-primary{
+    margin-left: 0px;
+}
+}
+</style>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="alert alert-danger" role="alert">          

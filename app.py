@@ -2,7 +2,6 @@ from flask import request, redirect, render_template,Flask,flash,session,url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, String, Integer, BLOB
 import base64
-from werkzeug.security import generate_password_hash
 from flask_login import current_user
 from sqlalchemy.orm import relationship
 from sqlalchemy.exc import IntegrityError
